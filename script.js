@@ -1,6 +1,7 @@
 // DOCUMENT QUERIES
 const booksDisplayElem = document.querySelector('main');
 const createBookButton = document.querySelector('#create-book-button');
+const createBookModal = document.querySelector('.modal');
 const form = document.querySelector('form');
 const bookTitleInput = document.querySelector('input#book-title');
 const bookAuthorInput = document.querySelector('input#book-author');
@@ -21,11 +22,12 @@ function Book(title, author, pages, read = false) {
 
 // GLOBAL STATE
 let myLibrary = [];
-
 let isCreateBookModalShowing = false;
 // END GLOBAL STATE
 
-// SET UP EVENT LISTENERS
+// SET UP DOM
+createBookModal.style.display = 'none';
+
 // Validate form again when submitted.
 form.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -36,7 +38,7 @@ form.addEventListener('submit', (e) => {
 [bookTitleInput, bookAuthorInput, bookPagesInput, bookHasBeenReadCheckbox].forEach((input) =>
   input.addEventListener('input', checkInputs)
 );
-// END SET UP EVENT LISTENERS
+// END SET UP DOM
 
 // DOM MANIPULATION FUNCTIONS
 function addBookToLibrary() {}
