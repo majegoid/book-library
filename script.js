@@ -8,9 +8,7 @@ const bookPagesInput = document.querySelector('input#book-pages');
 const bookHasBeenReadCheckbox = document.querySelector('input#book-read');
 // END DOCUMENT QUERIES
 
-// GLOBAL STATE
-let myLibrary = [];
-
+// DATA STRUCTURES
 function Book(title, author, pages, read = false) {
   this.title = title;
   this.author = author;
@@ -19,6 +17,12 @@ function Book(title, author, pages, read = false) {
   this.info = () =>
     `${this.title} by ${this.author}, ${this.pages} pages, ${read ? 'read' : 'not read yet'}`;
 }
+// END DATA STRUCTURES
+
+// GLOBAL STATE
+let myLibrary = [];
+
+let isCreateBookModalShowing = false;
 // END GLOBAL STATE
 
 // SET UP EVENT LISTENERS
@@ -42,6 +46,10 @@ function displayBooks() {
     let cardElem = document.createElement('div').setAttribute('class', 'card');
     cardElem.addChild((document.createElement('h2').textContent = book.title));
   });
+}
+
+function toggleCreateBookModalDisplay() {
+  isCreateBookModalShowing = !isCreateBookModalShowing;
 }
 // END DOM MANIPULATION FUNCTIONS
 
