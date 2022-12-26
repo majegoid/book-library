@@ -159,6 +159,7 @@ body {
 
   font-family: inherit;
   font-size: 16px;
+  font-weight: bold;
   color: #fff;
   background-color: #777;
 }
@@ -179,7 +180,7 @@ body {
   display: block;
   position: relative;
 
-  padding: 0 35px 0 0;
+  padding: 0 0 0 35px;
 
   cursor: pointer;
   -webkit-user-select: none;

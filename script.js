@@ -1,7 +1,6 @@
 // DOCUMENT QUERIES
 const booksDisplayElem = document.querySelector('main');
 const createBookButton = document.querySelector('#create-book-button');
-// FORM RELATED:
 const form = document.querySelector('form');
 const bookTitleInput = document.querySelector('input#book-title');
 const bookAuthorInput = document.querySelector('input#book-author');
@@ -22,6 +21,19 @@ function Book(title, author, pages, read = false) {
 }
 // END GLOBAL STATE
 
+// SET UP EVENT LISTENERS
+// Validate form again when submitted.
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  checkInputs();
+});
+
+// Validate every input when any input is changed.
+[bookTitleInput, bookAuthorInput, bookPagesInput, bookHasBeenReadCheckbox].forEach((input) =>
+  input.addEventListener('input', checkInputs)
+);
+// END SET UP EVENT LISTENERS
+
 // DOM MANIPULATION FUNCTIONS
 function addBookToLibrary() {}
 
@@ -29,45 +41,47 @@ function displayBooks() {
   booksDisplayElem.innerHTML = myLibrary.map((book) => {
     let cardElem = document.createElement('div').setAttribute('class', 'card');
     cardElem.addChild((document.createElement('h2').textContent = book.title));
-    // cardElem.addChild(document.c)
   });
 }
 // END DOM MANIPULATION FUNCTIONS
 
-// form submit event listener
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
+// CLASS MANIPULATION FUNCTIONS
+// Sets a form-control div's class to show the error state and the error message text.
+function setErrorFor(input, message) {
+  const formControl = input.parentElement;
+  formControl.className = 'form-control error';
+  const small = formControl.querySelector('small');
+  small.innerText = message;
+}
 
-  checkInputs();
-});
-
-// add checkInputs() call as input listeners to every input
-[bookTitleInput, bookAuthorInput, bookPagesInput, bookHasBeenReadCheckbox].forEach((input) =>
-  input.addEventListener('input', checkInputs)
-);
+// Sets a form-control div's class to show the success state.
+function setSuccessFor(input) {
+  const formControl = input.parentElement;
+  formControl.className = 'form-control success';
+}
+// END ELEMENT CLASS MANIPULATION FUNCTIONS
 
 function checkInputs() {
-  // trim all values, set them as const values so they can't be reassigned
+  // Trim all values, set them as const values so they can't be reassigned.
   const bookTitleValue = bookTitleInput.value.trim();
   const bookAuthorValue = bookAuthorInput.value.trim();
   const bookPagesValue = bookPagesInput.value.trim();
-  // const bookHasBeenReadValue = bookHasBeenReadCheckbox.checked;
 
-  // validate book title
+  // Validate Book Title
   if (bookTitleValue === '') {
     setErrorFor(bookTitleInput, `Book Title can't be blank.`);
   } else {
     setSuccessFor(bookTitleInput);
   }
 
-  // validate book author
+  // Validate Book Author
   if (bookAuthorValue === '') {
     setErrorFor(bookAuthorInput, `Book Author can't be blank.`);
   } else {
     setSuccessFor(bookAuthorInput);
   }
 
-  // validate book pages
+  // Validate Book Pages
   if (bookPagesValue === '') {
     setErrorFor(bookPagesInput, `Book Pages can't be blank.`);
   } else if (Number.isNaN(+bookPagesValue)) {
@@ -77,20 +91,4 @@ function checkInputs() {
   } else {
     setSuccessFor(bookPagesInput);
   }
-
-  // checkbox is not validated
-}
-
-// sets a form-control div's error class and the error message text
-function setErrorFor(input, message) {
-  const formControl = input.parentElement;
-  formControl.className = 'form-control error';
-  const small = formControl.querySelector('small');
-  small.innerText = message;
-}
-
-// sets a form-control div's success class
-function setSuccessFor(input) {
-  const formControl = input.parentElement;
-  formControl.className = 'form-control success';
 }
