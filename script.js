@@ -1,6 +1,7 @@
 // DOCUMENT QUERIES
 const booksDisplayElem = document.querySelector('main');
-const createBookButton = document.querySelector('#create-book-button');
+const navCreateBookButton = document.querySelector('button.button-green');
+const createBookButton = document.querySelector('button#create-book-button');
 const createBookModal = document.querySelector('.modal');
 const form = document.querySelector('form');
 const bookTitleInput = document.querySelector('input#book-title');
@@ -10,7 +11,7 @@ const bookHasBeenReadCheckbox = document.querySelector('input#book-read');
 // END DOCUMENT QUERIES
 
 // DATA STRUCTURES
-function Book(title, author, pages, read = false) {
+function Book(title = 'Unknown Title', author = 'Unknown Author', pages = 1, read = false) {
   this.title = title;
   this.author = author;
   this.pages = pages;
@@ -21,17 +22,23 @@ function Book(title, author, pages, read = false) {
 // END DATA STRUCTURES
 
 // GLOBAL STATE
-let myLibrary = [];
+let myLibrary = [new Book(), new Book(), new Book(), new Book(), new Book()];
 let isCreateBookModalShowing = false;
 // END GLOBAL STATE
 
 // SET UP DOM
 createBookModal.style.display = 'none';
+navCreateBookButton.setAttribute('onclick', () => console.log('asdf'));
+console.log(navCreateBookButton.onclick);
 
 // Validate form again when submitted.
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  checkInputs();
+  let isFormInvalid = checkInputs();
+  if (isFormInvalid) {
+    return;
+  }
+  console.log(e);
 });
 
 // Validate every input when any input is changed.
@@ -44,10 +51,32 @@ form.addEventListener('submit', (e) => {
 function addBookToLibrary() {}
 
 function displayBooks() {
-  booksDisplayElem.innerHTML = myLibrary.map((book) => {
-    let cardElem = document.createElement('div').setAttribute('class', 'card');
-    cardElem.addChild((document.createElement('h2').textContent = book.title));
-  });
+  booksDisplayElem.replaceChildren();
+  myLibrary.map((book) => booksDisplayElem.appendChild(createCardElem(book)));
+}
+
+function createCardElem(book) {
+  // <div class='card'>
+  //   <h3>"Book Title"</h3>
+  //   <p>by Book Author</p>
+  //   <p>Page Count: 999</p>
+  //   <p>Finished Reading: True</p>
+  // </div>;
+  let cardElem = document.createElement('div');
+  let titleElem = document.createElement('h3');
+  let authorElem = document.createElement('p');
+  let pagesElem = document.createElement('p');
+  let readElem = document.createElement('p');
+  cardElem.setAttribute('class', 'card');
+  titleElem.textContent = `"${book.title}"`;
+  authorElem.textContent = `by ${book.author}`;
+  pagesElem.textContent = `Pages: ${book.pages}`;
+  readElem.textContent = `Finished Reading: ${book.read}`;
+  cardElem.appendChild(titleElem);
+  cardElem.appendChild(authorElem);
+  cardElem.appendChild(pagesElem);
+  cardElem.appendChild(readElem);
+  return cardElem;
 }
 
 function toggleCreateBookModalDisplay() {
@@ -72,6 +101,7 @@ function setSuccessFor(input) {
 // END ELEMENT CLASS MANIPULATION FUNCTIONS
 
 function checkInputs() {
+  let validationError = false;
   // Trim all values, set them as const values so they can't be reassigned.
   const bookTitleValue = bookTitleInput.value.trim();
   const bookAuthorValue = bookAuthorInput.value.trim();
@@ -80,6 +110,7 @@ function checkInputs() {
   // Validate Book Title
   if (bookTitleValue === '') {
     setErrorFor(bookTitleInput, `Book Title can't be blank.`);
+    validationError = true;
   } else {
     setSuccessFor(bookTitleInput);
   }
@@ -87,6 +118,7 @@ function checkInputs() {
   // Validate Book Author
   if (bookAuthorValue === '') {
     setErrorFor(bookAuthorInput, `Book Author can't be blank.`);
+    validationError = true;
   } else {
     setSuccessFor(bookAuthorInput);
   }
@@ -94,11 +126,17 @@ function checkInputs() {
   // Validate Book Pages
   if (bookPagesValue === '') {
     setErrorFor(bookPagesInput, `Book Pages can't be blank.`);
+    validationError = true;
   } else if (Number.isNaN(+bookPagesValue)) {
     setErrorFor(bookPagesInput, `Book Pages value must be a number.`);
+    validationError = true;
   } else if (+bookPagesValue <= 0) {
     setErrorFor(bookPagesInput, `Book Pages can't be less than or equal to 0.`);
+    validationError = true;
   } else {
     setSuccessFor(bookPagesInput);
   }
+  return validationError;
 }
+
+displayBooks();
