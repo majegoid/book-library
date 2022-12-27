@@ -26,11 +26,15 @@ function Book(title = 'Unknown Title', author = 'Unknown Author', pages = 1, rea
   this.read = read;
   this.info = () =>
     `${this.title} by ${this.author}, ${this.pages} pages, ${read ? 'read' : 'not read yet'}`;
+  this.toggleBookReadStatus = () => {
+    this.read = !this.read;
+    displayBooks();
+  };
 }
 // END DATA STRUCTURES
 
 // GLOBAL STATE
-let myLibrary = [new Book(), new Book(), new Book(), new Book(), new Book(), new Book()];
+let myLibrary = [new Book(1), new Book(2), new Book(3), new Book(4), new Book(5), new Book(6)];
 // END GLOBAL STATE
 
 // SET UP DOM
@@ -104,6 +108,8 @@ function createCardElem(book) {
   let authorElem = document.createElement('p');
   let pagesElem = document.createElement('p');
   let readElem = document.createElement('p');
+  let buttonContainer = document.createElement('div');
+  let toggleReadStatusButton = document.createElement('button');
   let deleteButton = document.createElement('button');
 
   cardElem.setAttribute('class', 'card');
@@ -111,15 +117,22 @@ function createCardElem(book) {
   authorElem.textContent = `by ${book.author}`;
   pagesElem.textContent = `Pages: ${book.pages}`;
   readElem.textContent = `Finished Reading: ${book.read}`;
+  toggleReadStatusButton.textContent = 'Toggle Read';
+  toggleReadStatusButton.classList.add('button-blue');
+  toggleReadStatusButton.onclick = book.toggleBookReadStatus;
   deleteButton.textContent = 'Delete';
   deleteButton.classList.add('button-red');
+  deleteButton.style.float = 'right';
   deleteButton.onclick = () => removeBookFromLibrary(book);
 
   cardElem.appendChild(titleElem);
   cardElem.appendChild(authorElem);
   cardElem.appendChild(pagesElem);
   cardElem.appendChild(readElem);
-  cardElem.appendChild(deleteButton);
+  cardElem.appendChild(buttonContainer);
+
+  buttonContainer.appendChild(toggleReadStatusButton);
+  buttonContainer.appendChild(deleteButton);
 
   return cardElem;
 }
