@@ -72,7 +72,22 @@ function removeBookFromLibrary(book) {
 
 function displayBooks() {
   booksDisplayContainer.replaceChildren();
-  myLibrary.forEach((book) => booksDisplayContainer.appendChild(createCardElem(book)));
+  myLibrary
+    .sort((a, b) => {
+      if (a.title > b.title) return 1;
+      if (a.title < b.title) return -1;
+
+      if (a.author > b.author) return 1;
+      if (a.author < b.author) return -1;
+
+      if (a.pages > b.pages) return 1;
+      if (a.pages < b.pages) return -1;
+
+      if (a.read > b.read) return 1;
+      if (a.read < b.read) return -1;
+    })
+    .map((book) => createCardElem(book))
+    .forEach((card) => booksDisplayContainer.appendChild(card));
 }
 
 function createCardElem(book) {
