@@ -79,6 +79,14 @@ button:active {
 .button-green:active {
   background-color: #070;
 }
+
+.button-red {
+  background-color: #900;
+  border-color: #900;
+}
+.button-red:active {
+  background-color: #700;
+}
 /* End Buttons */
 
 .card {

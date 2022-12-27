@@ -65,6 +65,11 @@ function addBookToLibrary(bookData) {
   displayBooks();
 }
 
+function removeBookFromLibrary(book) {
+  myLibrary = myLibrary.filter((b) => b !== book);
+  displayBooks();
+}
+
 function displayBooks() {
   booksDisplayContainer.replaceChildren();
   myLibrary.forEach((book) => booksDisplayContainer.appendChild(createCardElem(book)));
@@ -76,23 +81,30 @@ function createCardElem(book) {
   //   <p>by Book Author</p>
   //   <p>Page Count: 999</p>
   //   <p>Finished Reading: True</p>
+  //   <button>Delete</button>
   // </div>;
+
   let cardElem = document.createElement('div');
   let titleElem = document.createElement('h3');
   let authorElem = document.createElement('p');
   let pagesElem = document.createElement('p');
   let readElem = document.createElement('p');
+  let deleteButton = document.createElement('button');
 
   cardElem.setAttribute('class', 'card');
   titleElem.textContent = `"${book.title}"`;
   authorElem.textContent = `by ${book.author}`;
   pagesElem.textContent = `Pages: ${book.pages}`;
   readElem.textContent = `Finished Reading: ${book.read}`;
+  deleteButton.textContent = 'Delete';
+  deleteButton.classList.add('button-red');
+  deleteButton.onclick = () => removeBookFromLibrary(book);
 
   cardElem.appendChild(titleElem);
   cardElem.appendChild(authorElem);
   cardElem.appendChild(pagesElem);
   cardElem.appendChild(readElem);
+  cardElem.appendChild(deleteButton);
 
   return cardElem;
 }
