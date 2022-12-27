@@ -73,27 +73,39 @@ button:active {
 }
 
 .button-green {
-  background-color: #090;
-  border-color: #090;
+  background-color: #0a0;
+  border-color: #0a0;
+}
+.button-green:hover {
+  background-color: #0c0;
+  border-color: #0c0;
 }
 .button-green:active {
-  background-color: #070;
+  background-color: #090;
 }
 
 .button-red {
-  background-color: #900;
-  border-color: #900;
+  background-color: #a00;
+  border-color: #a00;
+}
+.button-red:hover {
+  background-color: #c00;
+  border-color: #c00;
 }
 .button-red:active {
-  background-color: #700;
+  background-color: #900;
 }
 
 .button-blue {
-  background-color: #009;
-  border-color: #009;
+  background-color: #00a;
+  border-color: #00a;
+}
+.button-blue:hover {
+  background-color: #00c;
+  border-color: #00c;
 }
 .button-blue:active {
-  background-color: #007;
+  background-color: #009;
 }
 /* End Buttons */
 
