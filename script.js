@@ -23,13 +23,11 @@ function Book(title = 'Unknown Title', author = 'Unknown Author', pages = 1, rea
 
 // GLOBAL STATE
 let myLibrary = [new Book(), new Book(), new Book(), new Book(), new Book()];
-let isCreateBookModalShowing = false;
 // END GLOBAL STATE
 
 // SET UP DOM
 createBookModal.style.display = 'none';
-navCreateBookButton.setAttribute('onclick', () => console.log('asdf'));
-console.log(navCreateBookButton.onclick);
+navCreateBookButton.onclick = toggleCreateBookModalDisplay;
 
 // Validate form again when submitted.
 form.addEventListener('submit', (e) => {
@@ -38,7 +36,6 @@ form.addEventListener('submit', (e) => {
   if (isFormInvalid) {
     return;
   }
-  console.log(e);
 });
 
 // Validate every input when any input is changed.
@@ -80,7 +77,11 @@ function createCardElem(book) {
 }
 
 function toggleCreateBookModalDisplay() {
-  isCreateBookModalShowing = !isCreateBookModalShowing;
+  if (createBookModal.style.display === 'none') {
+    createBookModal.style.display = 'block';
+  } else {
+    createBookModal.style.display = 'none';
+  }
 }
 // END DOM MANIPULATION FUNCTIONS
 
