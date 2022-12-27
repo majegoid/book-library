@@ -137,7 +137,7 @@ nav {
 
   width: 100%;
 
-  background-color: red;
+  background-color: #999;
 }
 
 nav > h1 {
@@ -286,23 +286,17 @@ main {
 
   padding: 10px;
   margin: 20px 0 0 0;
-  border: 2px solid #777;
   border-radius: 4px;
 
   font-family: inherit;
   font-size: 16px;
   font-weight: bold;
   color: #fff;
-  background-color: #777;
 }
 
-.form button:hover {
-  cursor: pointer;
-}
-
+.form button:hover,
 .form button:active {
   cursor: pointer;
-  background-color: #555;
 }
 /* END FORM */
 
