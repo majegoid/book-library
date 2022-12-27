@@ -30,7 +30,7 @@ function Book(title = 'Unknown Title', author = 'Unknown Author', pages = 1, rea
 // END DATA STRUCTURES
 
 // GLOBAL STATE
-let myLibrary = [new Book(), new Book(), new Book(), new Book(), new Book()];
+let myLibrary = [new Book(), new Book(), new Book(), new Book(), new Book(), new Book()];
 // END GLOBAL STATE
 
 // SET UP DOM

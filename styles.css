@@ -128,8 +128,12 @@ nav > h1 {
 /* MAIN */
 main {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 300px);
+  grid-template-columns: repeat(auto-fill, 300px);
   gap: 1rem;
+  /* justify-items: start;
+  align-items: start; */
+  justify-content: start;
+  align-content: start;
 
   width: 100%;
   padding: 1rem;
