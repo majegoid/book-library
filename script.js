@@ -1,7 +1,8 @@
 // DOCUMENT QUERIES
-const booksDisplayElem = document.querySelector('main');
+const booksDisplayContainer = document.querySelector('main');
 const navCreateBookButton = document.querySelector('button.button-green');
 const createBookButton = document.querySelector('button#create-book-button');
+const modalClickBg = document.querySelector('div.modal-click-bg');
 const createBookModal = document.querySelector('.modal');
 const form = document.querySelector('form');
 const bookTitleInput = document.querySelector('input#book-title');
@@ -26,8 +27,11 @@ let myLibrary = [new Book(), new Book(), new Book(), new Book(), new Book()];
 // END GLOBAL STATE
 
 // SET UP DOM
-createBookModal.style.display = 'none';
+modalClickBg.style.display = 'none';
+
+modalClickBg.onclick = toggleCreateBookModalDisplay;
 navCreateBookButton.onclick = toggleCreateBookModalDisplay;
+createBookModal.onclick = (e) => e.stopPropagation();
 
 // Validate form again when submitted.
 form.addEventListener('submit', (e) => {
@@ -48,8 +52,8 @@ form.addEventListener('submit', (e) => {
 function addBookToLibrary() {}
 
 function displayBooks() {
-  booksDisplayElem.replaceChildren();
-  myLibrary.map((book) => booksDisplayElem.appendChild(createCardElem(book)));
+  booksDisplayContainer.replaceChildren();
+  myLibrary.map((book) => booksDisplayContainer.appendChild(createCardElem(book)));
 }
 
 function createCardElem(book) {
@@ -77,10 +81,10 @@ function createCardElem(book) {
 }
 
 function toggleCreateBookModalDisplay() {
-  if (createBookModal.style.display === 'none') {
-    createBookModal.style.display = 'block';
+  if (modalClickBg.style.display === 'none') {
+    modalClickBg.style.display = 'block';
   } else {
-    createBookModal.style.display = 'none';
+    modalClickBg.style.display = 'none';
   }
 }
 // END DOM MANIPULATION FUNCTIONS

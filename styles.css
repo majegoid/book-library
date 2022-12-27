@@ -129,11 +129,26 @@ main {
 /* END MAIN */
 
 /* MODALS */
+.modal-click-bg {
+  position: absolute;
+
+  min-height: 100vh;
+  height: 100%;
+  width: 100%;
+
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-click-bg:hover {
+  cursor: pointer;
+}
+
 .modal {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 
   position: absolute;
   top: 50%;
