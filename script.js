@@ -19,14 +19,16 @@ const createBookModalFormTextInputs = Array.from(
 // END DOCUMENT QUERIES
 
 // DATA STRUCTURES
-function Book(title = 'Unknown Title', author = 'Unknown Author', pages = 1, read = false) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
-  this.info = () =>
+class Book {
+  constructor(title = 'Unknown Title', author = 'Unknown Author', pages = 1, read = false) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+  }
+  info = () =>
     `${this.title} by ${this.author}, ${this.pages} pages, ${read ? 'read' : 'not read yet'}`;
-  this.toggleBookReadStatus = () => {
+  toggleBookReadStatus = () => {
     this.read = !this.read;
     displayBooks();
   };
@@ -53,6 +55,7 @@ createBookModalForm.addEventListener('submit', (e) => {
   let isFormInvalid = checkInputs();
   if (isFormInvalid) return;
   let bookData = Object.fromEntries(new FormData(createBookModalForm).entries());
+  bookData.read = !!bookData.read;
   addBookToLibrary(bookData);
   toggleCreateBookModalDisplay();
 });
