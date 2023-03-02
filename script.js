@@ -7,7 +7,9 @@ const booksDisplayContainer = document.querySelector('main');
 const modalClickBg = document.querySelector('div.modal-click-bg');
 const createBookModal = document.querySelector('.modal');
 // FORM
-const createBookModalForm = document.querySelector('form#create-book-modal-form');
+const createBookModalForm = document.querySelector(
+  'form#create-book-modal-form'
+);
 const bookTitleInput = document.querySelector('input#book-title');
 const bookAuthorInput = document.querySelector('input#book-author');
 const bookPagesInput = document.querySelector('input#book-pages');
@@ -19,67 +21,96 @@ const createBookModalFormTextInputs = Array.from(
 // END DOCUMENT QUERIES
 
 // DATA STRUCTURES
+/** Describes a Book. */
 class Book {
-  constructor(title = 'Unknown Title', author = 'Unknown Author', pages = 1, read = false) {
+  constructor(
+    title = 'Unknown Title',
+    author = 'Unknown Author',
+    pages = 1,
+    read = false
+  ) {
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = read;
   }
   info = () =>
-    `${this.title} by ${this.author}, ${this.pages} pages, ${read ? 'read' : 'not read yet'}`;
+    `${this.title} by ${this.author}, ${this.pages} pages, ${
+      read ? 'read' : 'not read yet'
+    }`;
   toggleBookReadStatus = () => {
     this.read = !this.read;
-    displayBooks();
+    updateBooksDisplay();
   };
 }
 // END DATA STRUCTURES
 
 // GLOBAL STATE
-let myLibrary = [new Book(1), new Book(2), new Book(3), new Book(4), new Book(5), new Book(6)];
+/** In-memory array that holds the books for display. */
+let library = [
+  new Book('Book Title 1'),
+  new Book('Book Title 2'),
+  new Book('Book Title 3'),
+  new Book('Book Title 4'),
+  new Book('Book Title 5'),
+  new Book('Book Title 6'),
+];
 // END GLOBAL STATE
 
 // SET UP DOM
 modalClickBg.style.display = 'none';
 
+// toggle the modal display on click of the modal background, then reset the form
 modalClickBg.onclick = () => {
   toggleCreateBookModalDisplay();
   resetForm();
 };
+// pressing the "create book" button will toggle the modal display
 navCreateBookButton.onclick = toggleCreateBookModalDisplay;
+// clicks on the modal don't go beyond it
 createBookModal.onclick = (e) => e.stopPropagation();
 
-// Validate form again when submitted.
+// If the form is invalid when submitted, do nothing. If the form is valid when
+// submitted, add a book from the Create book form input data to the library.
 createBookModalForm.addEventListener('submit', (e) => {
   e.preventDefault();
   let isFormInvalid = checkInputs();
   if (isFormInvalid) return;
-  let bookData = Object.fromEntries(new FormData(createBookModalForm).entries());
+  let bookData = Object.fromEntries(
+    new FormData(createBookModalForm).entries()
+  );
   bookData.read = !!bookData.read;
   addBookToLibrary(bookData);
   toggleCreateBookModalDisplay();
 });
 
 // Validate every input when any input is changed.
-createBookModalFormTextInputs.forEach((input) => input.addEventListener('input', checkInputs));
+createBookModalFormTextInputs.forEach((input) =>
+  input.addEventListener('input', checkInputs)
+);
 // END SET UP DOM
 
 // DOM MANIPULATION FUNCTIONS
+/** Adds a book to the library using the values from a bookData object. */
 function addBookToLibrary(bookData) {
   let newBook = new Book(...Object.values(bookData));
-  myLibrary.push(newBook);
-  myLibrary.sort((a, b) => a.title - b.title);
-  displayBooks();
+  library.push(newBook);
+  library.sort((a, b) => a.title - b.title);
+  updateBooksDisplay();
 }
 
+/** Removes a book from the library by book reference. Updates the books display. */
 function removeBookFromLibrary(book) {
-  myLibrary = myLibrary.filter((b) => b !== book);
-  displayBooks();
+  library = library.filter((b) => b !== book);
+  updateBooksDisplay();
 }
 
-function displayBooks() {
+/** Clears the booksDisplayContainer.
+ * Sorts all Books in the library by title, then author, then pages,
+ * then read status, then appends them to the booksDisplayContainer. */
+function updateBooksDisplay() {
   booksDisplayContainer.replaceChildren();
-  myLibrary
+  library
     .sort((a, b) => {
       if (a.title > b.title) return 1;
       if (a.title < b.title) return -1;
@@ -97,6 +128,7 @@ function displayBooks() {
     .forEach((card) => booksDisplayContainer.appendChild(card));
 }
 
+/** Creates a card that displays a single book's info. */
 function createCardElem(book) {
   // <div class='card'>
   //   <h3>"Book Title"</h3>
@@ -140,6 +172,7 @@ function createCardElem(book) {
   return cardElem;
 }
 
+/** Toggles the display value of the modal between block and none. */
 function toggleCreateBookModalDisplay() {
   if (modalClickBg.style.display === 'none') {
     modalClickBg.style.display = 'block';
@@ -148,14 +181,19 @@ function toggleCreateBookModalDisplay() {
   }
 }
 
+/** Resets the form's input field values. */
 function resetForm() {
+  // resets form fields to ''
   createBookModalForm.reset();
-  createBookModalFormTextInputs.forEach((inputElem) => setFormControlDefault(inputElem));
+  // resets form field classes to default
+  createBookModalFormTextInputs.forEach((inputElem) =>
+    setFormControlDefault(inputElem)
+  );
 }
 // END DOM MANIPULATION FUNCTIONS
 
 // CLASS MANIPULATION FUNCTIONS
-// Sets a form-control div's validation state to the default
+/** Sets a form-control div's validation state to the default. Clears the error message. */
 function setFormControlDefault(input) {
   const formControl = input.parentElement;
   formControl.className = 'form-control';
@@ -163,7 +201,7 @@ function setFormControlDefault(input) {
   small.innerText = '';
 }
 
-// Sets a form-control div's class to show the error state and the error message text.
+/** Sets a form-control div's class to show the error state. Shows the error message text. */
 function setFormControlError(input, message) {
   const formControl = input.parentElement;
   formControl.className = 'form-control error';
@@ -171,21 +209,24 @@ function setFormControlError(input, message) {
   small.innerText = message;
 }
 
-// Sets a form-control div's class to show the success state.
+/** Sets a form-control div's class to show the success state. Clears the error message. */
 function setFormControlSuccess(input) {
   const formControl = input.parentElement;
   formControl.className = 'form-control success';
+  const small = formControl.querySelector('small');
+  small.innerText = '';
 }
 // END ELEMENT CLASS MANIPULATION FUNCTIONS
 
+/** Validates all form inputs, setting FormControlSuccess or FormControlError state on each input according to the validation rules*/
 function checkInputs() {
   let validationError = false;
-  // Trim all values, set them as const values so they can't be reassigned.
+  // Trim all values
   const bookTitleValue = bookTitleInput.value.trim();
   const bookAuthorValue = bookAuthorInput.value.trim();
   const bookPagesValue = bookPagesInput.value.trim();
 
-  // Validate Book Title
+  // Validate that the book title is not empty
   if (bookTitleValue === '') {
     setFormControlError(bookTitleInput, `Book Title can't be blank.`);
     validationError = true;
@@ -193,7 +234,7 @@ function checkInputs() {
     setFormControlSuccess(bookTitleInput);
   }
 
-  // Validate Book Author
+  // Validate that the book author is not empty
   if (bookAuthorValue === '') {
     setFormControlError(bookAuthorInput, `Book Author can't be blank.`);
     validationError = true;
@@ -201,7 +242,7 @@ function checkInputs() {
     setFormControlSuccess(bookAuthorInput);
   }
 
-  // Validate Book Pages
+  // Validate that the book has a positive whole number of pages
   if (bookPagesValue === '') {
     setFormControlError(bookPagesInput, `Book Pages can't be blank.`);
     validationError = true;
@@ -209,12 +250,55 @@ function checkInputs() {
     setFormControlError(bookPagesInput, `Book Pages value must be a number.`);
     validationError = true;
   } else if (+bookPagesValue <= 0) {
-    setFormControlError(bookPagesInput, `Book Pages can't be less than or equal to 0.`);
+    setFormControlError(
+      bookPagesInput,
+      `Book Pages must be a positive number.`
+    );
     validationError = true;
+  } else if (!Number.isInteger(+bookPagesValue)) {
+    setFormControlError(bookPagesInput, `Book Pages must be a whole number.`);
   } else {
     setFormControlSuccess(bookPagesInput);
   }
   return validationError;
 }
 
-displayBooks();
+updateBooksDisplay();
+
+// // Import the functions you need from the SDKs you need
+// import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js';
+// import { getAuth } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
+// import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
+
+// // TODO: Add SDKs for Firebase products that you want to use
+// // https://firebase.google.com/docs/web/setup#available-libraries
+
+// // // Your web app's Firebase configuration
+// const firebaseConfig = {
+//   apiKey: 'AIzaSyCaLGWEybwzofDRd2X-XAWepA5yCCBCvGI',
+//   authDomain: 'book-library-e8bde.firebaseapp.com',
+//   projectId: 'book-library-e8bde',
+//   storageBucket: 'book-library-e8bde.appspot.com',
+//   messagingSenderId: '944697328018',
+//   appId: '1:944697328018:web:fcc5dcf43c9f47174b814b',
+// };
+
+// // // Initialize Firebase
+// const app = initializeApp(firebaseConfig);
+// // Initialize Cloud Firestore and get a reference to the service
+// const db = getFirestore(app);
+
+// const auth = getAuth(app);
+
+// // console.log('firebase');
+// // console.log(firebase);
+
+// console.log('app');
+// console.log(app);
+
+// console.log('db');
+// console.log(db);
+
+// console.log('auth');
+// console.log(auth);
+

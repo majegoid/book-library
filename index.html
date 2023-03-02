@@ -10,7 +10,22 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"
     />
-    <script src="script.js" defer></script>
+    <!-- <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"
+      
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
+      
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"
+      
+    ></script> -->
+    <script type="module" src="script.js"></script>
   </head>
   <body>
     <nav>
@@ -27,21 +42,36 @@
           <form id="create-book-modal-form" class="form" novalidate>
             <div class="form-control">
               <label for="book-title">Title</label>
-              <input type="text" id="book-title" name="title" placeholder="Title" />
+              <input
+                type="text"
+                id="book-title"
+                name="title"
+                placeholder="Title"
+              />
               <i class="fas fa-check-circle"></i>
               <i class="fas fa-exclamation-circle"></i>
               <small>Error message</small>
             </div>
             <div class="form-control">
               <label for="book-author">Author</label>
-              <input type="text" id="book-author" name="author" placeholder="Author" />
+              <input
+                type="text"
+                id="book-author"
+                name="author"
+                placeholder="Author"
+              />
               <i class="fas fa-check-circle"></i>
               <i class="fas fa-exclamation-circle"></i>
               <small>Error message</small>
             </div>
             <div class="form-control">
               <label for="book-pages">Pages</label>
-              <input type="text" id="book-pages" name="pages" placeholder="Pages" />
+              <input
+                type="text"
+                id="book-pages"
+                name="pages"
+                placeholder="Pages"
+              />
               <i class="fas fa-check-circle"></i>
               <i class="fas fa-exclamation-circle"></i>
               <small>Error message</small>
@@ -53,7 +83,9 @@
                 <span class="checkmark"></span>
               </label>
             </div>
-            <button id="create-book-button" class="button-green">Create Book</button>
+            <button id="create-book-button" class="button-green">
+              Create Book
+            </button>
           </form>
         </div>
       </div>
