@@ -6,7 +6,7 @@ const modalClickBg = document.querySelector('div.modal-click-bg');
 const modal = document.querySelector('.modal');
 
 /** Sets up the modal in the DOM. */
-function modalSetup() {
+function setup() {
   hideModal();
   modalClickBg.onclick = hideModal;
   modal.onclick = (e) => e.stopPropagation();
@@ -28,7 +28,7 @@ function updateModalContents(modalContents) {
 }
 
 export const modalController = {
-  modalSetup,
+  setup,
   showModal,
   hideModal,
   updateModalContents,
