@@ -10,10 +10,13 @@ export class Book {
     this.author = author;
     this.pages = pages;
     this.read = read;
+    // bind instance methods' this keyword to the instance
+    this.info = this.info.bind(this);
+    this.toggleBookReadStatus = this.toggleBookReadStatus.bind(this);
   }
   info = () =>
     `${this.title} by ${this.author}, ${this.pages} pages, ${
-      read ? 'read' : 'not read yet'
+      this.read ? 'read' : 'not read yet'
     }`;
   toggleBookReadStatus = () => {
     this.read = !this.read;

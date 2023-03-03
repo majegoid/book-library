@@ -3,9 +3,9 @@ import { firebaseSetup } from './services/firebaseInit.js';
 import { Book } from './dataStructures/Book.js';
 import { Library } from './dataStructures/Library.js';
 import { booksDisplayController } from './elementFactories/book/createBooksDisplayContainer.js';
-import { bookFormController } from './elementFactories/forms/createCreateBookForm.js';
-import { modalController } from './functions/modal.js';
+import { createBookFormController } from './elementFactories/forms/createCreateBookForm.js';
 import { navbarController } from './elementFactories/navbar/createNavbar.js';
+import { modalController } from './functions/modal.js';
 
 const displayController = (function createDisplayController() {
   const library = new Library([
@@ -23,7 +23,6 @@ const displayController = (function createDisplayController() {
     navbarController.setup(displayController.showCreateBookForm);
     // displayController.showCreateBookForm();
     modalController.setup();
-
     // prepare the display
     displayController.updateBooksDisplay();
   }
@@ -33,12 +32,22 @@ const displayController = (function createDisplayController() {
     modalController.hideModal();
   }
 
+  /** Updates the Books Display and hides the Modal. */
+  function updateBooksDisplayAndHideModal() {
+    displayController.hideModal();
+    displayController.updateBooksDisplay();
+  }
+
   /** Creates a CreateBookForm, updates the modal contents, performs setup for
-   * the bookFormController, then shows the modal.*/
+   * the createBookFormController, then shows the modal.*/
   function showCreateBookForm() {
-    const createBookForm = bookFormController.create();
+    const createBookForm = createBookFormController.create();
     modalController.updateModalContents(createBookForm);
-    bookFormController.setup();
+    // createBookFormController.setup((book) => library.addBook(book));
+    createBookFormController.setup(
+      library.addBook,
+      displayController.updateBooksDisplayAndHideModal
+    );
     modalController.showModal();
   }
 
@@ -46,7 +55,13 @@ const displayController = (function createDisplayController() {
     booksDisplayController.update(library.getBooks());
   }
 
-  return { setup, hideModal, showCreateBookForm, updateBooksDisplay };
+  return {
+    setup,
+    hideModal,
+    showCreateBookForm,
+    updateBooksDisplay,
+    updateBooksDisplayAndHideModal,
+  };
 })();
 
 (function main() {

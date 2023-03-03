@@ -1,27 +1,29 @@
 export class Library {
   /** In-memory array that holds the books for display. */
   library = [];
+
   constructor(startingBooks = []) {
     this.library = startingBooks;
+    // bind instance methods' this keyword to the instance
+    this.addBook = this.addBook.bind(this);
+    this.removeBook = this.removeBook.bind(this);
+    this.sortBooks = this.sortBooks.bind(this);
   }
 
   /** Adds a book to the library using the values from a bookData object. */
-  addBook(bookData) {
-    let newBook = new Book(...Object.values(bookData));
-    this.library.push(newBook);
-    this.library.sort((a, b) => a.title - b.title);
-    updateBooksDisplay();
+  addBook(book) {
+    this.library.push(book);
+    this.sortBooks();
   }
 
   /** Removes a book from the library by book reference. Updates the books display. */
   removeBook(book) {
-    this.library = library.filter((b) => b !== book);
-    updateBooksDisplay();
+    this.library = this.library.filter((b) => b !== book);
   }
 
   /** Sorts the books in the library. */
   sortBooks() {
-    this.library = library.sort((a, b) => {
+    this.library = this.library.sort((a, b) => {
       if (a.title > b.title) return 1;
       if (a.title < b.title) return -1;
 

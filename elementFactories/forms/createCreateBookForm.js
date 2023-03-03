@@ -1,3 +1,4 @@
+import { Book } from '../../dataStructures/Book.js';
 import { createFormCheckbox } from './controls/createFormCheckbox.js';
 import { createFormInput } from './controls/createFormInput.js';
 
@@ -113,13 +114,13 @@ function create() {
 }
 
 /** Refreshes document queries and adds event listeners to the form. */
-function setup() {
-  refreshCreateBookFormDocumentQueries();
-  addCreateBookFormEventListeners();
+function setup(addBookHandler, updateUIHandler) {
+  refreshDocumentQueries();
+  addEventListeners(addBookHandler, updateUIHandler);
 }
 
 /** Updates each DOM element variable related to the Create Book Form. */
-function refreshCreateBookFormDocumentQueries() {
+function refreshDocumentQueries() {
   createBookModalForm = document.querySelector('form#create-book-modal-form');
   bookTitleInput = document.querySelector('input#book-title');
   bookAuthorInput = document.querySelector('input#book-author');
@@ -131,24 +132,26 @@ function refreshCreateBookFormDocumentQueries() {
   );
 }
 
-function addCreateBookFormEventListeners() {
+/** Adds one-time event listeners for the form. */
+function addEventListeners(addBookHandler, updateUIHandler) {
   // If the form is invalid when submitted, do nothing. If the form is valid when
   // submitted, add a book from the Create book form input data to the library.
   createBookModalForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    let isFormInvalid = checkInputs();
+    let isFormInvalid = validate();
     if (isFormInvalid) return;
     let bookData = Object.fromEntries(
       new FormData(createBookModalForm).entries()
     );
     bookData.read = !!bookData.read;
-    addBookToLibrary(bookData);
-    toggleShowModalClickBg();
+    const newBook = new Book(...Object.values(bookData));
+    addBookHandler(newBook);
+    updateUIHandler();
   });
 
   // Validate every input when any input is changed.
   createBookModalFormTextInputs.forEach((input) =>
-    input.addEventListener('input', checkInputs)
+    input.addEventListener('input', validate)
   );
 }
 
@@ -187,7 +190,7 @@ function setFormControlSuccess(input) {
 }
 
 /** Validates all form inputs, setting FormControlSuccess or FormControlError state on each input according to the validation rules*/
-function checkInputs() {
+function validate() {
   let validationError = false;
   // Trim all values
   const bookTitleValue = bookTitleInput.value.trim();
@@ -231,7 +234,7 @@ function checkInputs() {
   return validationError;
 }
 
-export const bookFormController = {
+export const createBookFormController = {
   create,
   setup,
   reset,
