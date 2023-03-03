@@ -1,10 +1,10 @@
 import { getAuth } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
 
-import { app } from './script.js';
+import { app } from './firebaseInit.js';
 
 let auth = undefined;
 
-export function initAuth() {
+export function initFirebaseAuth() {
   auth = getAuth(app);
 
   console.log('auth');

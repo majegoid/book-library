@@ -1,9 +1,9 @@
 import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
-import { app } from './script.js';
+import { app } from './firebaseInit.js';
 
 let db = undefined;
 
-export function initDb() {
+export function initFirestoreDb() {
   // Initialize Cloud Firestore and get a reference to the service
   db = getFirestore(app);
 

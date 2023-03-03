@@ -17,6 +17,5 @@ export class Book {
     }`;
   toggleBookReadStatus = () => {
     this.read = !this.read;
-    updateBooksDisplay();
   };
 }

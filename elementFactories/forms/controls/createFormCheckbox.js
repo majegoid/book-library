@@ -1,8 +1,5 @@
 /** Creates a form checkbox. */
 export function createFormCheckbox(id, labelText, name, checked = false) {
-  if (placeholder === '') {
-    placeholder = labelText;
-  }
   // title div
   const containerDiv = document.createElement('div');
   containerDiv.className = 'form-control';
