@@ -1,6 +1,37 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js';
+import { initAuth } from './firebaseAuth.js';
+import { initDb } from './firestoreDb.js';
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: 'AIzaSyCaLGWEybwzofDRd2X-XAWepA5yCCBCvGI',
+  authDomain: 'book-library-e8bde.firebaseapp.com',
+  projectId: 'book-library-e8bde',
+  storageBucket: 'book-library-e8bde.appspot.com',
+  messagingSenderId: '944697328018',
+  appId: '1:944697328018:web:fcc5dcf43c9f47174b814b',
+};
+
+// Initialize Firebase
+export const app = initializeApp(firebaseConfig);
+initAuth();
+initDb();
+
+console.log('app');
+console.log(app);
+
+import { signUp } from './firebaseAuth.js';
+
 // DOCUMENT QUERIES
 // NAVBAR
 const navCreateBookButton = document.querySelector('button.button-green');
+const loginButton = document.querySelector('#login-button');
+const logoutButton = document.querySelector('#logout-button');
+const signupButton = document.querySelector('#signup-button');
 // MAIN
 const booksDisplayContainer = document.querySelector('main');
 // MODAL
@@ -18,6 +49,7 @@ const createBookButton = document.querySelector('button#create-book-button');
 const createBookModalFormTextInputs = Array.from(
   document.querySelectorAll('#create-book-modal-form input[type="text"]')
 );
+
 // END DOCUMENT QUERIES
 
 // DATA STRUCTURES
@@ -88,6 +120,12 @@ createBookModalForm.addEventListener('submit', (e) => {
 createBookModalFormTextInputs.forEach((input) =>
   input.addEventListener('input', checkInputs)
 );
+
+// set up event listeners for signup, login, and logout buttons
+loginButton.onclick = () => {};
+logoutButton.onclick = () => {};
+signupButton.onclick = () => signUp(email, password);
+
 // END SET UP DOM
 
 // DOM MANIPULATION FUNCTIONS
@@ -264,41 +302,3 @@ function checkInputs() {
 }
 
 updateBooksDisplay();
-
-// // Import the functions you need from the SDKs you need
-// import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js';
-// import { getAuth } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js';
-// import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js';
-
-// // TODO: Add SDKs for Firebase products that you want to use
-// // https://firebase.google.com/docs/web/setup#available-libraries
-
-// // // Your web app's Firebase configuration
-// const firebaseConfig = {
-//   apiKey: 'AIzaSyCaLGWEybwzofDRd2X-XAWepA5yCCBCvGI',
-//   authDomain: 'book-library-e8bde.firebaseapp.com',
-//   projectId: 'book-library-e8bde',
-//   storageBucket: 'book-library-e8bde.appspot.com',
-//   messagingSenderId: '944697328018',
-//   appId: '1:944697328018:web:fcc5dcf43c9f47174b814b',
-// };
-
-// // // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// // Initialize Cloud Firestore and get a reference to the service
-// const db = getFirestore(app);
-
-// const auth = getAuth(app);
-
-// // console.log('firebase');
-// // console.log(firebase);
-
-// console.log('app');
-// console.log(app);
-
-// console.log('db');
-// console.log(db);
-
-// console.log('auth');
-// console.log(auth);
-

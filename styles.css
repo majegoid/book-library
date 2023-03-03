@@ -132,11 +132,9 @@ button:active {
 /* NAV */
 nav {
   display: grid;
-  grid-template-columns: 1fr 9fr;
+  grid-template-columns: 1fr 6fr 1fr;
   align-items: center;
-
   width: 100%;
-
   background-color: #999;
 }
 
