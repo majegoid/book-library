@@ -3,6 +3,9 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.17.1/firebas
 import { initAuth } from './firebaseAuth.js';
 import { initDb } from './firestoreDb.js';
 
+import { Book } from './dataStructures/Book.js';
+import { createBookDisplayCard } from './elementFactories/book/createBookDisplayCard.js';
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -38,6 +41,7 @@ const booksDisplayContainer = document.querySelector('main');
 const modalClickBg = document.querySelector('div.modal-click-bg');
 const createBookModal = document.querySelector('.modal');
 // FORM
+// Create Book Form Document Queries
 const createBookModalForm = document.querySelector(
   'form#create-book-modal-form'
 );
@@ -49,33 +53,7 @@ const createBookButton = document.querySelector('button#create-book-button');
 const createBookModalFormTextInputs = Array.from(
   document.querySelectorAll('#create-book-modal-form input[type="text"]')
 );
-
 // END DOCUMENT QUERIES
-
-// DATA STRUCTURES
-/** Describes a Book. */
-class Book {
-  constructor(
-    title = 'Unknown Title',
-    author = 'Unknown Author',
-    pages = 1,
-    read = false
-  ) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-  }
-  info = () =>
-    `${this.title} by ${this.author}, ${this.pages} pages, ${
-      read ? 'read' : 'not read yet'
-    }`;
-  toggleBookReadStatus = () => {
-    this.read = !this.read;
-    updateBooksDisplay();
-  };
-}
-// END DATA STRUCTURES
 
 // GLOBAL STATE
 /** In-memory array that holds the books for display. */
@@ -90,15 +68,19 @@ let library = [
 // END GLOBAL STATE
 
 // SET UP DOM
-modalClickBg.style.display = 'none';
 
-// toggle the modal display on click of the modal background, then reset the form
-modalClickBg.onclick = () => {
-  toggleCreateBookModalDisplay();
+// MODAL
+/** Toggles the modal display on click of the modal background, then resets the
+ * form. */
+function modalCloseHandler() {
+  toggleShowModalClickBg();
   resetForm();
-};
+}
+
+modalClickBg.style.display = 'none';
+modalClickBg.onclick = modalCloseHandler;
 // pressing the "create book" button will toggle the modal display
-navCreateBookButton.onclick = toggleCreateBookModalDisplay;
+navCreateBookButton.onclick = toggleShowModalClickBg;
 // clicks on the modal don't go beyond it
 createBookModal.onclick = (e) => e.stopPropagation();
 
@@ -113,7 +95,7 @@ createBookModalForm.addEventListener('submit', (e) => {
   );
   bookData.read = !!bookData.read;
   addBookToLibrary(bookData);
-  toggleCreateBookModalDisplay();
+  toggleShowModalClickBg();
 });
 
 // Validate every input when any input is changed.
@@ -162,56 +144,12 @@ function updateBooksDisplay() {
       if (a.read > b.read) return 1;
       if (a.read < b.read) return -1;
     })
-    .map((book) => createCardElem(book))
+    .map((book) => createBookDisplayCard(book))
     .forEach((card) => booksDisplayContainer.appendChild(card));
 }
 
-/** Creates a card that displays a single book's info. */
-function createCardElem(book) {
-  // <div class='card'>
-  //   <h3>"Book Title"</h3>
-  //   <p>by Book Author</p>
-  //   <p>Page Count: 999</p>
-  //   <p>Finished Reading: True</p>
-  //   <button>Delete</button>
-  // </div>;
-
-  let cardElem = document.createElement('div');
-  let titleElem = document.createElement('h3');
-  let authorElem = document.createElement('p');
-  let pagesElem = document.createElement('p');
-  let readElem = document.createElement('p');
-  let buttonContainer = document.createElement('div');
-  let toggleReadStatusButton = document.createElement('button');
-  let deleteButton = document.createElement('button');
-
-  cardElem.setAttribute('class', 'card');
-  titleElem.textContent = `"${book.title}"`;
-  authorElem.textContent = `by ${book.author}`;
-  pagesElem.textContent = `Pages: ${book.pages}`;
-  readElem.textContent = `Finished Reading: ${book.read}`;
-  toggleReadStatusButton.textContent = 'Toggle Read';
-  toggleReadStatusButton.classList.add('button-blue');
-  toggleReadStatusButton.onclick = book.toggleBookReadStatus;
-  deleteButton.textContent = 'Delete';
-  deleteButton.classList.add('button-red');
-  deleteButton.style.float = 'right';
-  deleteButton.onclick = () => removeBookFromLibrary(book);
-
-  cardElem.appendChild(titleElem);
-  cardElem.appendChild(authorElem);
-  cardElem.appendChild(pagesElem);
-  cardElem.appendChild(readElem);
-  cardElem.appendChild(buttonContainer);
-
-  buttonContainer.appendChild(toggleReadStatusButton);
-  buttonContainer.appendChild(deleteButton);
-
-  return cardElem;
-}
-
 /** Toggles the display value of the modal between block and none. */
-function toggleCreateBookModalDisplay() {
+function toggleShowModalClickBg() {
   if (modalClickBg.style.display === 'none') {
     modalClickBg.style.display = 'block';
   } else {
