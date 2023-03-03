@@ -38,6 +38,12 @@ const displayController = (function createDisplayController() {
     displayController.updateBooksDisplay();
   }
 
+  /** Remove book and update Books Display. */
+  function removeBookAndUpdateBooksDisplay(book) {
+    library.removeBook(book);
+    displayController.updateBooksDisplay();
+  }
+
   /** Creates a CreateBookForm, updates the modal contents, performs setup for
    * the createBookFormController, then shows the modal.*/
   function showCreateBookForm() {
@@ -52,7 +58,10 @@ const displayController = (function createDisplayController() {
   }
 
   function updateBooksDisplay() {
-    booksDisplayController.update(library.getBooks());
+    booksDisplayController.update(
+      library.getBooks(),
+      displayController.removeBookAndUpdateBooksDisplay
+    );
   }
 
   return {
@@ -61,6 +70,7 @@ const displayController = (function createDisplayController() {
     showCreateBookForm,
     updateBooksDisplay,
     updateBooksDisplayAndHideModal,
+    removeBookAndUpdateBooksDisplay,
   };
 })();
 

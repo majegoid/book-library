@@ -1,5 +1,5 @@
 /** Creates a card that displays a single book's info. */
-export function createBookDisplayCard(book) {
+export function createBookDisplayCard(book, removeBookHandler) {
   // <div class='card'>
   //   <h3>"Book Title"</h3>
   //   <p>by Book Author</p>
@@ -28,7 +28,8 @@ export function createBookDisplayCard(book) {
   deleteButton.textContent = 'Delete';
   deleteButton.classList.add('button-red');
   deleteButton.style.float = 'right';
-  deleteButton.onclick = () => removeBookFromLibrary(book);
+  // here
+  deleteButton.onclick = () => removeBookHandler(book);
 
   cardElem.appendChild(titleElem);
   cardElem.appendChild(authorElem);
