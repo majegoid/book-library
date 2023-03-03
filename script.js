@@ -38,9 +38,15 @@ const displayController = (function createDisplayController() {
     displayController.updateBooksDisplay();
   }
 
-  /** Remove book and update Books Display. */
+  /** Remove book and updates the Books Display. */
   function removeBookAndUpdateBooksDisplay(book) {
     library.removeBook(book);
+    displayController.updateBooksDisplay();
+  }
+
+  /** Toggles a book's read status and updates the Books Display. */
+  function toggleBookReadStatusAndUpdateBooksDisplay(book) {
+    book.toggleBookReadStatus();
     displayController.updateBooksDisplay();
   }
 
@@ -60,7 +66,8 @@ const displayController = (function createDisplayController() {
   function updateBooksDisplay() {
     booksDisplayController.update(
       library.getBooks(),
-      displayController.removeBookAndUpdateBooksDisplay
+      displayController.removeBookAndUpdateBooksDisplay,
+      displayController.toggleBookReadStatusAndUpdateBooksDisplay
     );
   }
 
@@ -71,6 +78,7 @@ const displayController = (function createDisplayController() {
     updateBooksDisplay,
     updateBooksDisplayAndHideModal,
     removeBookAndUpdateBooksDisplay,
+    toggleBookReadStatusAndUpdateBooksDisplay,
   };
 })();
 
